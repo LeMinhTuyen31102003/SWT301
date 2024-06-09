@@ -38,28 +38,28 @@
                                     <input value="${product.id}" name="id" id="id" type="text" class="form-control" readonly required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input value="${product.name}" name="name" type="text" class="form-control" required>
+                                    <label for="name">Name</label>
+                                    <input value="${product.name}" name="name" id="name" type="text" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Image</label>
-                                    <input value="${product.imageUrl}" name="image" type="file" class="form-control" required>
+                                    <label for="image">Image</label>
+                                    <input value="${product.imageUrl}" name="image" id="image" type="file" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Price</label>
-                                    <input value="${product.price}" name="price" type="text" pattern="^\d+\.*\d*$" title="Please Enter Double Value!" class="form-control" required>
+                                    <label for="price">Price</label>
+                                    <input value="${product.price}" name="price" id="price" type="text" pattern="^\d+\.*\d*$" title="Please Enter Double Value!" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Title</label>
-                                    <textarea name="title" class="form-control" required>${product.tiltle}</textarea>
+                                    <label for="title">Title</label>
+                                    <textarea name="title" id="title" class="form-control" required>${product.tiltle}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label>Description</label>
-                                    <textarea name="description" class="form-control" required>${product.description}</textarea>
+                                    <label for="des">Description</label>
+                                    <textarea name="description" id="des" class="form-control" required>${product.description}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label>Category</label>
-                                    <select name="category" class="form-select" aria-label="Default select example">
+                                    <label for="category">Category</label>
+                                    <select name="category" id="category" class="form-select" aria-label="Default select example">
                                         <c:forEach items="${listCategories}" var="o">
                                             <option ${(product.categoryId == o.cid)?"selected":""} value="${o.cid}">${o.cname}</option>
                                         </c:forEach>
