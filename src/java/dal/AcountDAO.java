@@ -23,9 +23,8 @@ public class AcountDAO extends DBContext {
     public List<Account> getAllAccount() {
         String sql = "SELECT uID,user,pass,isSell,isAdmin,active FROM Account where isAdmin != 1";
         List<Account> list = new ArrayList<>();
-        try (PreparedStatement stm = connection.prepareStatement(sql);) {
-
-            ResultSet rs = stm.executeQuery();
+        try (PreparedStatement stm = connection.prepareStatement(sql);
+                ResultSet rs = stm.executeQuery();) {
             while (rs.next()) {
                 Account account = new Account();
                 account.setUid(rs.getInt(1));
