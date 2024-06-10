@@ -5,7 +5,6 @@
  */
 package dal;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,18 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Account;
 import model.Category;
 
 public class CategoryDAO extends DBContext { //thao tác với bảng category
 
     public List<Category> getAllCategories() {
         List<Category> list = new ArrayList<>();
-        try {
-            String sql = "select * from Category";
-
-            PreparedStatement stm = connection.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
+        String sql = " select cid, cname from Category";
+        try (PreparedStatement stm = connection.prepareStatement(sql); ResultSet rs = stm.executeQuery();) {
             while (rs.next()) {
                 Category category = new Category();
                 category.setCid(rs.getInt(1));
@@ -38,12 +33,11 @@ public class CategoryDAO extends DBContext { //thao tác với bảng category
     }
 
     public void insertCategory(String name) {
-        try {
-            String sql = "INSERT INTO [Category]\n"
-                    + "           ([cname])\n"
-                    + "     VALUES\n"
-                    + "           (?)";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "INSERT INTO [Category]\n"
+                + "           ([cname])\n"
+                + "     VALUES\n"
+                + "           (?)";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setString(1, name);
             stm.executeUpdate();
         } catch (SQLException ex) {
@@ -52,16 +46,16 @@ public class CategoryDAO extends DBContext { //thao tác với bảng category
     }
 
     public Category getCategoryById(int id) {
-        try {
-            String sql = "select *  from Category where cid = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "select *  from Category where cid = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
-            if (rs.next()) {
-                Category a = new Category();
-                a.setCid(rs.getInt(1));
-                a.setCname(rs.getString(2));
-                return a;
+            try (ResultSet rs = stm.executeQuery();) {
+                if (rs.next()) {
+                    Category a = new Category();
+                    a.setCid(rs.getInt(1));
+                    a.setCname(rs.getString(2));
+                    return a;
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(AcountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,11 +64,10 @@ public class CategoryDAO extends DBContext { //thao tác với bảng category
     }
 
     public void updateCategory(Category category) {
-        try {
-            String sql = "UPDATE [dbo].[Category]\n"
-                    + "   SET [cname] = ?\n"
-                    + " WHERE cid = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "UPDATE [dbo].[Category]\n"
+                + "   SET [cname] = ?\n"
+                + " WHERE cid = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setString(1, category.getCname());
             stm.setInt(2, category.getCid());
             stm.executeUpdate();
@@ -85,19 +78,13 @@ public class CategoryDAO extends DBContext { //thao tác với bảng category
     }
 
     public void deleteCategory(int id) {
-        try {
-            String sql = "DELETE FROM [Category]\n"
-                    + "WHERE cid = ? ";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "DELETE FROM [Category]\n"
+                + "WHERE cid = ? ";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setInt(1, id);
             stm.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(AcountDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public static void main(String[] args) {
-        CategoryDAO s = new CategoryDAO();
-      
     }
 }
