@@ -5,7 +5,6 @@
  */
 package dal;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -17,27 +16,26 @@ import model.Shipping;
  *
  * @author Admin
  */
-public class ShippingDAO extends DBContext{
+public class ShippingDAO extends DBContext {
+
     public int createReturnId(Shipping shipping) {
-        try {
-            String sql = "INSERT INTO [dbo].[Shipping]\n"
-                    + "           ([name]\n"
-                    + "           ,[phone]\n"
-                    + "           ,[address])\n"
-                    + "     VALUES\n"
-                    + "           (?,?,?)";
-            
-            PreparedStatement stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        String sql = """
+                     INSERT INTO [dbo].[Shipping]
+                                ([name]
+                                ,[phone]
+                                ,[address])
+                          VALUES
+                                (?,?,?)""";
+        try (PreparedStatement stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
             stm.setString(1, shipping.getName());
             stm.setString(2, shipping.getPhone());
             stm.setString(3, shipping.getAddress());
             stm.executeUpdate();
-            
-            ResultSet rs = stm.getGeneratedKeys();
-            if(rs.next()){
-                return rs.getInt(1);
+            try (ResultSet rs = stm.getGeneratedKeys();) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
-            
         } catch (Exception ex) {
             Logger.getLogger(ShippingDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
