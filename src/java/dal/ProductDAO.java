@@ -18,14 +18,7 @@ public class ProductDAO extends DBContext {
 
     public List<Product> getAllProducts() {
         List<Product> list = new ArrayList<>();
-        String sql = """
-                         SELECT [id]
-                               ,[order_id]
-                               ,[productName]
-                               ,[productImage]
-                               ,[productPrice]
-                               ,[quantity]
-                           FROM [PRJ301_SE1808].[dbo].[OrderDetail]""";
+        String sql = "SELECT id,name,image,price,title,description,cateID,sell_ID FROM Product";
         try (PreparedStatement stm = connection.prepareStatement(sql); ResultSet rs = stm.executeQuery();) {
             while (rs.next()) {
                 Product product = new Product();
@@ -48,13 +41,15 @@ public class ProductDAO extends DBContext {
     public List<Product> getProductsByCategoryId(int categoryId) {
         List<Product> list = new ArrayList<>();
         String sql = """
-                         SELECT [id]
+                         SELECT[id]
                                ,[order_id]
                                ,[productName]
                                ,[productImage]
                                ,[productPrice]
                                ,[quantity]
-                           FROM [PRJ301_SE1808].[dbo].[OrderDetail] where Product.cateID = ?""";
+                           FROM[PRJ301_SE1808].[dbo].[OrderDetail] where Product
+        .cateID =  ?
+        """;
         try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setInt(1, categoryId);
             try (ResultSet rs = stm.executeQuery();) {
