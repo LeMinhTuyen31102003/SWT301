@@ -23,8 +23,7 @@ public class AcountDAO extends DBContext {
     public List<Account> getAllAccount() {
         String sql = "SELECT uID,user,pass,isSell,isAdmin,active FROM Account where isAdmin != 1";
         List<Account> list = new ArrayList<>();
-        try (PreparedStatement stm = connection.prepareStatement(sql);
-                ResultSet rs = stm.executeQuery();) {
+        try (PreparedStatement stm = connection.prepareStatement(sql); ResultSet rs = stm.executeQuery();) {
             while (rs.next()) {
                 Account account = new Account();
                 account.setUid(rs.getInt(1));
@@ -33,7 +32,6 @@ public class AcountDAO extends DBContext {
                 account.setIsSell(rs.getInt(4));
                 account.setIsAdmin(rs.getInt(5));
                 account.setActive(rs.getBoolean(6));
-
                 list.add(account);
             }
         } catch (Exception ex) {
@@ -43,21 +41,21 @@ public class AcountDAO extends DBContext {
     }
 
     public Account login(String user, String pass) {
-        try {
-            String sql = "SELECT * FROM Account where [user] = ? and pass = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM Account where [user] = ? and pass = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setString(1, user);
             stm.setString(2, pass);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account a = new Account();
-                a.setUid(rs.getInt(1));
-                a.setUser(rs.getString(2));
-                a.setPass(rs.getString(3));
-                a.setIsSell(rs.getInt(4));
-                a.setIsAdmin(rs.getInt(5));
-                a.setActive(rs.getBoolean(6));
-                return a;
+            try (ResultSet rs = stm.executeQuery();) {
+                while (rs.next()) {
+                    Account a = new Account();
+                    a.setUid(rs.getInt(1));
+                    a.setUser(rs.getString(2));
+                    a.setPass(rs.getString(3));
+                    a.setIsSell(rs.getInt(4));
+                    a.setIsAdmin(rs.getInt(5));
+                    a.setActive(rs.getBoolean(6));
+                    return a;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AcountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -66,21 +64,21 @@ public class AcountDAO extends DBContext {
     }
 
     public Account checkAccountExistByUserPass(String user, String pass) {
-        try {
-            String sql = "SELECT * FROM Account where [user] = ? and [pass] = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM Account where [user] = ? and [pass] = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setString(1, user);
             stm.setString(2, pass);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account a = new Account();
-                a.setUid(rs.getInt(1));
-                a.setUser(rs.getString(2));
-                a.setPass(rs.getString(3));
-                a.setIsSell(rs.getInt(4));
-                a.setIsAdmin(rs.getInt(5));
-                a.setActive(rs.getBoolean(6));
-                return a;
+            try (ResultSet rs = stm.executeQuery();) {
+                while (rs.next()) {
+                    Account a = new Account();
+                    a.setUid(rs.getInt(1));
+                    a.setUser(rs.getString(2));
+                    a.setPass(rs.getString(3));
+                    a.setIsSell(rs.getInt(4));
+                    a.setIsAdmin(rs.getInt(5));
+                    a.setActive(rs.getBoolean(6));
+                    return a;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AcountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,20 +87,20 @@ public class AcountDAO extends DBContext {
     }
 
     public Account checkAccountExist(String user) {
-        try {
-            String sql = "SELECT * FROM Account where [user] = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM Account where [user] = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setString(1, user);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account a = new Account();
-                a.setUid(rs.getInt(1));
-                a.setUser(rs.getString(2));
-                a.setPass(rs.getString(3));
-                a.setIsSell(rs.getInt(4));
-                a.setIsAdmin(rs.getInt(5));
-                a.setActive(rs.getBoolean(6));
-                return a;
+            try (ResultSet rs = stm.executeQuery();) {
+                while (rs.next()) {
+                    Account a = new Account();
+                    a.setUid(rs.getInt(1));
+                    a.setUser(rs.getString(2));
+                    a.setPass(rs.getString(3));
+                    a.setIsSell(rs.getInt(4));
+                    a.setIsAdmin(rs.getInt(5));
+                    a.setActive(rs.getBoolean(6));
+                    return a;
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(AcountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,20 +109,19 @@ public class AcountDAO extends DBContext {
     }
 
     public void insertAccount(String user, String pass) {
-        try {
-            String sql = "INSERT INTO [Account]\n"
-                    + "           ([user]\n"
-                    + "           ,[pass]\n"
-                    + "           ,[isSell]\n"
-                    + "           ,[isAdmin]\n"
-                    + "           ,[active])\n"
-                    + "     VALUES\n"
-                    + "           (?\n"
-                    + "           ,?\n"
-                    + "           ,0\n"
-                    + "           ,0\n"
-                    + "           ,1)";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "INSERT INTO [Account]\n"
+                + "           ([user]\n"
+                + "           ,[pass]\n"
+                + "           ,[isSell]\n"
+                + "           ,[isAdmin]\n"
+                + "           ,[active])\n"
+                + "     VALUES\n"
+                + "           (?\n"
+                + "           ,?\n"
+                + "           ,0\n"
+                + "           ,0\n"
+                + "           ,1)";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setString(1, user);
             stm.setString(2, pass);
             stm.executeUpdate();
@@ -134,21 +131,20 @@ public class AcountDAO extends DBContext {
     }
 
     public Account getAccountById(int accountId) {
-        try {
-            String sql = "select *  from Account where uID = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "select *  from Account where uID = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setInt(1, accountId);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account account = new Account();
-                account.setUid(rs.getInt(1));
-                account.setUser(rs.getString(2));
-                account.setPass(rs.getString(3));
-                account.setIsSell(rs.getInt(4));
-                account.setIsAdmin(rs.getInt(5));
-                account.setActive(rs.getBoolean(6));
-
-                return account;
+            try (ResultSet rs = stm.executeQuery();) {
+                while (rs.next()) {
+                    Account account = new Account();
+                    account.setUid(rs.getInt(1));
+                    account.setUser(rs.getString(2));
+                    account.setPass(rs.getString(3));
+                    account.setIsSell(rs.getInt(4));
+                    account.setIsAdmin(rs.getInt(5));
+                    account.setActive(rs.getBoolean(6));
+                    return account;
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(AcountDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,12 +153,10 @@ public class AcountDAO extends DBContext {
     }
 
     public void updateAccount(Account account) {
-
-        try {
-            String sql = "UPDATE [Account]\n"
-                    + "   SET [active] = ?\n"
-                    + " WHERE uId = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "UPDATE [Account]\n"
+                + "   SET [active] = ?\n"
+                + " WHERE uId = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setBoolean(1, account.isActive());
             stm.setInt(2, account.getUid());
             stm.executeUpdate();
@@ -172,13 +166,11 @@ public class AcountDAO extends DBContext {
 
     }
 
-
     public void UpDatePassWord(String pass, String user) {
-        try {
-            String sql = "UPDATE [Account]\n"
-                    + "   SET [pass] = ?\n"
-                    + " WHERE [user] = ?";
-            PreparedStatement stm = connection.prepareStatement(sql);
+        String sql = "UPDATE [Account]\n"
+                + "   SET [pass] = ?\n"
+                + " WHERE [user] = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql);) {
             stm.setString(1, pass);
             stm.setString(2, user);
             stm.executeUpdate();

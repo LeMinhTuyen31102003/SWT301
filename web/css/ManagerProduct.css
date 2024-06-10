@@ -167,7 +167,6 @@ table.table .avatar {
     height: 11px;
     border: solid #000;
     border-width: 0 3px 3px 0;
-    transform: inherit;
     z-index: 3;
     transform: rotateZ(45deg);
 }
