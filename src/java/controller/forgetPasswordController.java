@@ -32,7 +32,7 @@ public class ForgetPasswordController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -77,7 +77,7 @@ public class ForgetPasswordController extends HttpServlet {
         String pass = request.getParameter("newPassword");
         String repass = request.getParameter("confirmPassword");
         AcountDAO adb = new AcountDAO();
-        Account account = adb.checkAccountExistByUserPass(user,passOld);
+        Account account = adb.checkAccountExistByUserPass(user, passOld);
         if (account == null) {
             request.setAttribute("mess", "Account does not exist or wrong password !");
             request.getRequestDispatcher("change-newpassword.jsp").forward(request, response);
